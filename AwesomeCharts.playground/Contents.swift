@@ -1,19 +1,25 @@
 import Foundation
 import UIKit
 
-let pie1 = PieChartPartition(name: "deekshith", percentage: 20, color: UIColor.redColor())
-let pie2 = PieChartPartition(name:"deekshith", percentage:20,color: UIColor.blackColor())
-let pie3 = PieChartPartition(name:"deekshith",percentage: 30,color: UIColor.blueColor())
-let pie4 = PieChartPartition(name:"deekshith",percentage: 10,color: UIColor.grayColor())
-let pie5 = PieChartPartition(name: "deekshith",percentage:20,color: UIColor.greenColor())
-let partitions = [pie1,pie2,pie3,pie4,pie5]
+let bjp = PieChartPartition(name: "BJP", percentage: 20, color: UIColor.redColor())
+let aap = PieChartPartition(name: "AAP", percentage: 20, color: UIColor.yellowColor())
+let ncp = PieChartPartition(name: "NCP", percentage: 20, color: UIColor.blueColor())
+let ldk = PieChartPartition(name: "LDK", percentage: 20, color: UIColor.greenColor())
+let congress = PieChartPartition(name: "Congress", percentage: 20, color: UIColor.grayColor())
+
+let partitions = [bjp,congress,aap,ncp,ldk]
 
 var containerView = UIView(frame: CGRectMake(0, 0, 300, 300))
-var pichart = PieChart(frame: containerView.bounds)
+var pichart = AwesomeChart(frame: containerView.bounds)
 containerView.addSubview(pichart)
 pichart.partitions = partitions
-pichart.setNeedsDisplay()
+pichart.chartType = .Donut2D
+pichart.render()
+pichart
+pichart
 
+pichart.chartType = .PiChart
+pichart.render()
 pichart
 
 

@@ -7,19 +7,25 @@ let shadowOffset = 25
 let layerFlatTransform = 1
 let layerReplaceTransform = 1
 
-public class PieChart:UIView {
+public enum ChartType
+{
+    case PiChart
+    case Donut2D
+}
+
+public class AwesomeChart:UIView {
     
     var widthOfmainPartion = 25
     
     public  var partitions :[PieChartPartition]?
     private var outerRadius:Float
     private var innerRadius:Float
+    public var  chartType:ChartType = .PiChart
     
-    func partitionPathWith(startAngle:Float,_ endAngle:Float) ->CGPathRef?
+    func partitionPathForPiChartWith(startAngle:Float,_ endAngle:Float) ->CGPathRef?
     {
         let path = UIBezierPath()
         path.moveToPoint(self.center)
-        
         let startingPointOuterArc = pointInCircleFor(self.center, radius: outerRadius, angle: startAngle)
         path.addLineToPoint(startingPointOuterArc)
         path.addArcWithCenter(self.center,radius: outerRadius.cf,startAngle: startAngle.degreesToRadians.cf,endAngle: endAngle.degreesToRadians.cf, clockwise: true)
@@ -28,10 +34,34 @@ public class PieChart:UIView {
         return path.CGPath
     }
     
+    func partitionPathForDonutChartWith(startAngle:Float,_ endAngle:Float) ->CGPathRef?
+    {
+        let path = UIBezierPath()
+        let startingPointInnerArc = pointInCircleFor(self.center, radius: innerRadius, angle: startAngle)
+        path.moveToPoint(startingPointInnerArc)
+        let startingPointOuterArc = pointInCircleFor(self.center, radius: outerRadius, angle: startAngle)
+        path.addLineToPoint(startingPointOuterArc)
+        path.addArcWithCenter(self.center,radius: outerRadius.cf,startAngle: startAngle.degreesToRadians.cf,endAngle: endAngle.degreesToRadians.cf, clockwise: true)
+        let endingPointInnerArc = pointInCircleFor(self.center, radius: innerRadius, angle: endAngle)
+        path.addLineToPoint(endingPointInnerArc)
+        path.addArcWithCenter(self.center,radius: innerRadius.cf,startAngle: endAngle.degreesToRadians.cf,endAngle: startAngle.degreesToRadians.cf, clockwise: false)
+        path.moveToPoint(self.center)
+        path.closePath()
+        return path.CGPath
+    }
+    
     func partitionLayerWith(startAngle:Float, _ endAngle:Float,_ color:UIColor) ->CALayer? {
         
         let parition = CAShapeLayer()
-        parition.path = partitionPathWith(startAngle,endAngle)
+        var path:CGPathRef;
+        switch(self.chartType) {
+        case .PiChart:
+            path = partitionPathForPiChartWith(startAngle,endAngle)!
+        case .Donut2D:
+            path = partitionPathForDonutChartWith(startAngle,endAngle)!
+        }
+        
+        parition.path = path
         
         myPathApply(parition.path) { element in
             switch (element.memory.type) {
@@ -64,9 +94,7 @@ public class PieChart:UIView {
         return parition;
         
     }
-    
-    
-    public override init(frame: CGRect) {
+      public override init(frame: CGRect) {
         
         var minimumWidth = (frame.size.width < frame.size.height ? frame.size.width : frame.size.height).f
         minimumWidth = minimumWidth - margin
@@ -74,6 +102,10 @@ public class PieChart:UIView {
         innerRadius = outerRadius*(4/5.0)
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
+    }
+    
+    public  func render() {
+        self.setNeedsDisplay()
     }
     
     required  public init?(coder aDecoder: NSCoder) {
