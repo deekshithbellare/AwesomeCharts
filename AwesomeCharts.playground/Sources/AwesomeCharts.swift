@@ -40,6 +40,7 @@ public class AwesomeChart:UIView {
         case PiChart2D
         case PiChart3D
         case Donut2D
+        case Donut2DPercentageIndicator
         case Donut3D
     }
     
@@ -96,7 +97,7 @@ public class AwesomeChart:UIView {
         switch(self.chartType) {
         case .PiChart2D,.PiChart3D:
             path = partitionPathForPiChartWith(startAngle,endAngle)!
-        case .Donut2D, .Donut3D:
+        case .Donut2D, .Donut3D,.Donut2DPercentageIndicator:
             path = partitionPathForDonutChartWith(startAngle,endAngle)!
         }
         parition.path = path
@@ -115,7 +116,6 @@ public class AwesomeChart:UIView {
         gradientParition.colors = [startColor,endColor!]
         gradientParition.mask = parition
         return parition;
-        
     }
     
     public override init(frame: CGRect) {
@@ -145,7 +145,7 @@ public class AwesomeChart:UIView {
     }
     
     func addPartitionLayers() {
-         self.layer.sublayers = nil
+        self.layer.sublayers = nil
         var lastPartitionAngle:Float = 0.0
         if let part = partitions {
             for partiton:PieChartPartition in part {
@@ -155,18 +155,24 @@ public class AwesomeChart:UIView {
                 lastPartitionAngle  += totalAngle
                 
                 if chartType == .Donut3D || chartType == .PiChart3D {
-                if let semiCircleType = SemiCircle.isInBottomCirlce(startAngle, endAngle: endAngle){
-                    let ShadowLayer = partitionShadowLayerWith(startAngle, endAngle,partiton.color, semiCircleType:semiCircleType)
-                    self.layer.addSublayer(ShadowLayer!)
+                    if let semiCircleType = SemiCircle.isInBottomCirlce(startAngle, endAngle: endAngle){
+                        let ShadowLayer = partitionShadowLayerWith(startAngle, endAngle,partiton.color, semiCircleType:semiCircleType)
+                        self.layer.addSublayer(ShadowLayer!)
+                    }
                 }
+                if chartType == .Donut3D {
+                    if let semiCircleType = SemiCircle.isInTopCirlce(startAngle, endAngle: endAngle){
+                        let ShadowLayer = partitionShadowLayerWith(startAngle, endAngle,partiton.color, semiCircleType:semiCircleType)
+                        self.layer.addSublayer(ShadowLayer!)
+                    }
                 }
-                 if chartType == .Donut3D
-                 {
-                if let semiCircleType = SemiCircle.isInTopCirlce(startAngle, endAngle: endAngle){
-                    let ShadowLayer = partitionShadowLayerWith(startAngle, endAngle,partiton.color, semiCircleType:semiCircleType)
-                    self.layer.addSublayer(ShadowLayer!)
+                
+                if chartType == .Donut2DPercentageIndicator
+                {
+                    let outerCirlceLayer = partitionLayerWith(0, 360, UIColor(red: 220/255.0, green: 220/255.0, blue: 220/255.0, alpha:1.0))
+                    self.layer.addSublayer(outerCirlceLayer!)
                 }
-                }
+                
                 let partitionLayer = partitionLayerWith(startAngle,endAngle,partiton.color)
                 self.layer.addSublayer(partitionLayer!)
                 
@@ -178,7 +184,6 @@ public class AwesomeChart:UIView {
         self.addPartitionLayers()
         self.configurePerspectiveOfLayer()
     }
-
     
     private func partitionShadowLayerWith(startAngle:Float, _ endAngle:Float,_ color:UIColor,semiCircleType:SemiCircle) ->CALayer? {
         
@@ -187,8 +192,8 @@ public class AwesomeChart:UIView {
         paritionShadow.fillColor = color.CGColor
         paritionShadow.opacity = 0.7
         return paritionShadow
-        
     }
+    
     private func partitionShadowPathLayerWith(var startAngle:Float,var _ endAngle:Float,semiCircleType:SemiCircle) ->CGPathRef? {
         
         
@@ -222,7 +227,8 @@ public class AwesomeChart:UIView {
         let currentPoint2 = path.currentPoint
         currentPoint2
         path.closePath()
-        return path.CGPath    }
+        return path.CGPath
+    }
 }
 
 // MARK: - Global methods
