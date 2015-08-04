@@ -67,17 +67,17 @@ let low = PieChartPartition(name: "Low", percentage: 10, color: UIColor.greenCol
 let partitions = [blocker,critical,high,medium,low]
 
 var containerView = UIView(frame: CGRectMake(0, 0, 400, 400))
-var pichart = AwesomeChart(frame: containerView.bounds)
-containerView.addSubview(pichart)
-pichart.partitions = partitions
+var awesomeChart = AwesomeChart(frame: containerView.bounds)
+containerView.addSubview(awesomeChart)
+awesomeChart.partitions = partitions
 
 
 /*:
 ## Donut 2D represntaion of defect status
 */
-pichart.chartType = .Donut2D
-pichart.render()
-pichart
+awesomeChart.chartType = .Donut2D
+awesomeChart.render()
+awesomeChart
 
 /*: A block of markup code showing a single horizontal line
 
@@ -87,9 +87,9 @@ pichart
 /*:
 ## Donut 3D represntaion of defect status
 */
-pichart.chartType = .Donut3D
-pichart.render()
-pichart
+awesomeChart.chartType = .Donut3D
+awesomeChart.render()
+awesomeChart
 
 /*: A block of markup code showing a single horizontal line
 
@@ -103,9 +103,9 @@ pichart
 ## PiChart 2D represntaion of defect status
 */
 
-pichart.chartType = .PiChart2D
-pichart.render()
-pichart
+awesomeChart.chartType = .PiChart2D
+awesomeChart.render()
+awesomeChart
 
 /*: A block of markup code showing a single horizontal line
 
@@ -116,15 +116,15 @@ pichart
 /*:
 ## PiChart 3D represntaion of defect status
 */
-pichart.chartType = .PiChart3D
-pichart.render()
-pichart
+awesomeChart.chartType = .PiChart3D
+awesomeChart.render()
+awesomeChart
 
 
 
 
 
-pichart
+awesomeChart
 
 
 
