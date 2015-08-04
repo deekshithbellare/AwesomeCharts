@@ -1,5 +1,5 @@
 ## Awesome Charts
-This is a plotting libray which can be used to plaot 2D and 3D Pi charts and Donut graphs
+This is a plotting library which can be used to plot 2D and 3D Pi charts and Donut graphs
 
 * Requires Xcode 7.0 / Swift 2.0
 
@@ -18,8 +18,28 @@ Add array of partitons to awesome chart and render it
     awesomeChart.partitions = partitions
     awesomeChart.chartType = .Donut2D
     awesomeChart.render()
-    awesomeChart.render()
 
+## Features
+*Pi Chart 2D*
+    awesomeChart.chartType = .PiChart2D
+![Pi Chart 2D](https://raw.github.com/deekshibellare/AwesomeCharts/master/Assets/2DPI.png)
+
+*Pi Chart 3D*
+    awesomeChart.chartType = .PiChart3D
+![Pi Chart 2D](https://raw.github.com/deekshibellare/AwesomeCharts/master/Assets/3DPI.png)
+
+*Donut Chart 2D*
+    awesomeChart.chartType = .Donut2D
+![Pi Chart 2D](https://raw.github.com/deekshibellare/AwesomeCharts/master/Assets/2DDonut.png)
+
+
+*Donut chart 3D*
+    awesomeChart.chartType = .Donut3D
+![Pi Chart 2D](https://raw.github.com/deekshibellare/AwesomeCharts/master/Assets/3DDonut.png)
+
+*Percentage Indicator Donut 2D*
+    awesomeChart.chartType = .Donut2DPercentageIndicator
+![Pi Chart 2D](https://raw.github.com/deekshibellare/AwesomeCharts/master/Assets/PercentageIndicator.png)
 
 ## Installation
 Drag and drop the AwesomeCharts.swift and Partition.swift files and start using it
