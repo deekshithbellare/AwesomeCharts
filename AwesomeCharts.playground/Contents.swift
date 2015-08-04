@@ -9,17 +9,27 @@ let congress = PieChartPartition(name: "Congress", percentage: 20, color: UIColo
 
 let partitions = [bjp,congress,aap,ncp,ldk]
 
-var containerView = UIView(frame: CGRectMake(0, 0, 300, 300))
+var containerView = UIView(frame: CGRectMake(0, 0, 400, 400))
 var pichart = AwesomeChart(frame: containerView.bounds)
 containerView.addSubview(pichart)
 pichart.partitions = partitions
 pichart.chartType = .Donut2D
 pichart.render()
 pichart
-pichart
-
-pichart.chartType = .PiChart
+pichart.chartType = .Donut3D
 pichart.render()
 pichart
+
+pichart.chartType = .PiChart2D
+pichart.render()
+pichart
+
+
+pichart.chartType = .PiChart3D
+pichart.render()
+pichart
+
+
+
 
 
